@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scanning File</title>
+
+  <style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+
+        background: linear-gradient(rgba(10,20,40,0.6), rgba(10,20,40,0.6)),
+        url("{{ url_for('static', filename='hee.jpg') }}");
+
+        background-size: cover;
+        color: white;
+        font-family: Arial;
+    }
+
+    .box {
+        text-align: center;
+        padding: 40px;
+        border-radius: 20px;
+
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(10px);
+    }
+
+    .loader {
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #00c6ff;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+  </style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+  <h2>🔍 Scanning for Virus...</h2>
+  <p>Please wait while we check your file</p>
+
+  <div class="loader"></div>
+
+</div>
+
+<script>
+  setTimeout(function(){
+      window.location.href = "/scan/{{ filename }}";
+  }, 2000);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Successful</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background-image:
+                linear-gradient(rgba(10, 20, 40, 0.45), rgba(10, 20, 40, 0.45)),
+                url("/static/hee.jpg");
+
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .success-box {
+            width: 500px;
+            padding: 45px;
+            text-align: center;
+            border-radius: 20px;
+
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+
+            color: white;
+        }
+
+        .icon {
+            font-size: 65px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size: 16px;
+            color: #dbeafe;
+            margin-bottom: 25px;
+        }
+
+        /* LINK SECTION */
+        .link-box {
+            display: flex;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+
+        .link-box input {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px 0 0 10px;
+            outline: none;
+        }
+
+        .copy-btn {
+            padding: 12px 18px;
+            background: linear-gradient(to right, #00c6ff, #0072ff);
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 0 10px 10px 0;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .copy-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 114, 255, 0.5);
+        }
+
+        .copied {
+            color: #00ffcc;
+            display: none;
+            margin-bottom: 20px;
+        }
+
+        .file-name {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 20px;
+            font-size: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            background: linear-gradient(to right, #00c6ff, #0072ff);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 15px;
+            transition: 0.3s;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 114, 255, 0.4);
+        }
+
+        .small-text {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #cbd5e1;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="success-box">
+
+    <div class="icon">✅</div>
+
+    <h1>Upload Successful!</h1>
+
+    <p>Your file has been uploaded and securely encrypted.</p>
+
+    <!-- MALWARE SCAN RESULT -->
+    <div style="margin-top: 10px; margin-bottom: 15px;">
+
+        {% if scan.status == "safe" %}
+        <p style="color: #00ffcc; font-weight: bold;">
+            ✔ File is SAFE ({{ scan.safe_count }} security engines passed)
+        </p>
+
+        {% elif scan.status == "malicious" %}
+        <p style="color: #ff4d4d; font-weight: bold;">
+            ⚠ Malware Detected! ({{ scan.malicious_count }} engines flagged this file)
+        </p>
+
+        {% else %}
+        <p style="color: orange;">
+            ⚠ Scan error. Could not verify file safety.
+        </p>
+        {% endif %}
+
+    </div>
+
+    <!-- SHARE LINK -->
+    <div class="link-box">
+        <input type="text" value="{{ link }}" id="linkBox" readonly>
+        <button class="copy-btn" onclick="copyLink()">Copy</button>
+    </div>
+
+    <p class="copied" id="copiedMsg">✔ Link Copied!</p>
+
+    {% if scan.file_id %}
+    <a href="https://www.virustotal.com/gui/file/{{ scan.file_id }}"
+       target="_blank"
+       class="btn"
+       style="margin-top:10px;">
+        View Scan Report
+    </a>
+    {% endif %}
+
+    <div class="file-name">
+        Protected with advanced encryption technology 🔐
+    </div>
+
+    <a href="/" class="btn">Upload Another File</a>
+
+    <div class="small-text">
+        Secure File Sharing System
+    </div>
+
+</div>
+
+<script>
+    function copyLink() {
+        var copyText = document.getElementById("linkBox");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+
+        navigator.clipboard.writeText(copyText.value);
+
+        document.getElementById("copiedMsg").style.display = "block";
+    }
+</script>
+
+</body>
+</html>
